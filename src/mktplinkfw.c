@@ -98,6 +98,7 @@ static struct file_info boot_info;
 int combined;
 int strip_padding;
 int add_jffs2_eof;
+int add_jffs2_size;
 static uint32_t fw_max_len;
 static uint32_t reserved_space;
 
@@ -612,6 +613,7 @@ int main(int argc, char *argv[])
 			break;
 		case 'j':
 			add_jffs2_eof = 1;
+			sscanf(optarg, "%d", &add_jffs2_size);
 			break;
 		case 'x':
 			extract = 1;

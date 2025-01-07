@@ -145,8 +145,7 @@ ldr_header_t* construct_header ( uint32_t magic, uint16_t rev_maj,uint16_t rev_m
 	if ( strlen ( filename ) >63 )
 	{
 		printf ( "[!] Filename too long - stripping it to 63 bytes.\n" );
-		strncpy ( ( char* ) &hd->filename, filename, 63 );
-		hd->filename[63]=0x00;
+		strncpy ( ( char* ) &hd->filename, filename, 62 );
 	}
 	else
 	{

@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
 	tail.version[1] = version[1];
 	tail.version[2] = version[2];
 	tail.version[3] = version[3];
-	strncpy(tail.productid, productid, sizeof(tail.productid));
+	strncpy(tail.productid, productid, sizeof(tail.productid) -1);
 
 	/* Open files */
 	in = fopen(in_path, "r");

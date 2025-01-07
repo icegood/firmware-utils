@@ -104,6 +104,7 @@ static struct file_info boot_info = { 0 };
 int combined;
 int strip_padding;
 int add_jffs2_eof;
+int add_jffs2_size;
 
 static struct file_info inspect_info;
 static int extract = 0;
@@ -683,7 +684,7 @@ int main(int argc, char *argv[])
 	while ( 1 ) {
 		int c;
 
-		c = getopt(argc, argv, "a:b:H:E:F:L:V:N:W:w:ci:k:r:R:o:xhsjv:y:T:e");
+		c = getopt(argc, argv, "a:b:H:E:F:L:V:N:W:w:ci:k:r:R:o:xhsj:v:y:T:e");
 		if (c == -1)
 			break;
 
@@ -747,6 +748,7 @@ int main(int argc, char *argv[])
 			break;
 		case 'j':
 			add_jffs2_eof = 1;
+			sscanf(optarg, "%d", &add_jffs2_size);
 			break;
 		case 'x':
 			extract = 1;
@@ -760,6 +762,16 @@ int main(int argc, char *argv[])
 		case 'h':
 			usage(EXIT_SUCCESS);
 			break;
+		case ':':
+			DBG("Option -%c has no argument", optopt);
+			if (optopt != 'j') {
+				usage(EXIT_FAILURE);
+				break;
+			} else {
+				add_jffs2_eof = 1;
+				add_jffs2_size = 0;
+			}
+
 		default:
 			usage(EXIT_FAILURE);
 			break;

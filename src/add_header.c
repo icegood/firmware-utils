@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 	init_crc32();
 
 	// copy model name into header
-	strncpy(header.model, argv[1], sizeof(header.model));
+	strncpy(header.model, argv[1], sizeof(header.model) - 1);
 	header.crc = 0;
 
 	// create a firmware image in memory and copy the input_file to it

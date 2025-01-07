@@ -37,6 +37,7 @@ extern uint32_t rootfs_align;
 extern int combined;
 extern int strip_padding;
 extern int add_jffs2_eof;
+extern int add_jffs2_size;
 
 static unsigned char jffs2_eof_mark[4] = {0xde, 0xad, 0xc0, 0xde};
 
@@ -117,7 +118,11 @@ static int pad_jffs2(char *buf, int currlen, int maxlen)
 	uint32_t pad_mask;
 
 	len = currlen;
-	pad_mask = (4 * 1024) | (64 * 1024);	/* EOF at 4KB and at 64KB */
+	if (add_jffs2_size) {
+		pad_mask = add_jffs2_size * 1024;
+	} else {
+		pad_mask = (4 * 1024) | (64 * 1024);	/* EOF at 4KB and at 64KB */
+	}
 	while ((len < maxlen) && (pad_mask != 0)) {
 		uint32_t mask;
 		int i;
@@ -240,12 +245,14 @@ int build_fw(size_t header_size)
 
 		writelen = rootfs_ofs + rootfs_info.file_size;
 
+		DBG("Before pad: %d", writelen);
 		if (add_jffs2_eof)
 			writelen = pad_jffs2(buf, writelen, layout->fw_max_len);
 	}
 
 	if (!strip_padding)
 		writelen = buflen;
+	DBG("Final len: %d", writelen);
 
 	fill_header(buf, writelen);
 	ret = write_fw(ofname, buf, writelen);

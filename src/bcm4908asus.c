@@ -257,7 +257,7 @@ static void bcm4908asus_create_parse_options(int argc, char **argv, struct bcm49
 			out_path = optarg;
 			break;
 		case 'p':
-			strncpy(tail->productid, optarg, sizeof(tail->productid));
+			strncpy(tail->productid, optarg, sizeof(tail->productid) - 1);
 			break;
 		case 'f':
 			if (sscanf(optarg, "%hhu.%hhu.%hhu.%hhu", &(tail->fw_ver[0]), &tail->fw_ver[1], &tail->fw_ver[2], &tail->fw_ver[3]) != 4)
